@@ -1,9 +1,10 @@
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 export function generateStaticParams() {
-  return [{ locale: "en" }, { locale: "az" }];
+  return [{ locale: "en" }, { locale: "az" }, { locale: "ru" }];
 }
 
 export default async function LocaleLayout({
@@ -15,7 +16,7 @@ export default async function LocaleLayout({
 }) {
   const messages = await getMessages();
 
-  if (!["en", "az"].includes(params.locale)) {
+  if (!["en", "az", "ru"].includes(params.locale)) {
     notFound();
   }
 
@@ -23,6 +24,8 @@ export default async function LocaleLayout({
     <html lang={params.locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
+          <LanguageSwitcher />
+
           {children}
         </NextIntlClientProvider>
       </body>
